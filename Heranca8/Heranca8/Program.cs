@@ -1,0 +1,51 @@
+﻿using Heranca8.Entities;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+
+namespace Heranca8
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<TaxPayer> list = new List<TaxPayer>();
+            Console.Write("Enter the number of tax payers: ");
+            int n = int.Parse(Console.ReadLine());
+
+            for (int i = 1; i <= n; i++)
+            {
+                Console.Write("Individual or company (i/c)?");
+                char tipo = char.Parse(Console.ReadLine().ToUpper());
+                Console.WriteLine($"Tax payer #{i} data:");
+                Console.Write("Name: ");
+                string name = Console.ReadLine();
+                Console.Write("Anual income: ");
+                double anualIncome = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+
+                if (tipo == 'I')
+                {
+                    Console.Write("Health expenditures: ");
+                    double healthExpenditures = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                    list.Add(new Individual(name, anualIncome, healthExpenditures));
+                }
+                else
+                {
+                    Console.Write("Number of employees: ");
+                    int numberOfEmployess = int.Parse(Console.ReadLine());
+                    list.Add(new Company(name, anualIncome, numberOfEmployess));
+                }
+            }
+            Console.WriteLine();
+            Console.WriteLine("TAXES PAID:");
+            double sum = 0;
+            foreach (TaxPayer t in list)
+            {
+                sum += t.tax();
+                Console.WriteLine(t.ToString());
+            }
+
+            Console.WriteLine("TOTAL TAXES: " + sum.ToString("F2"),CultureInfo.InvariantCulture);
+        }
+    }
+}
